@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Appliance Management System</title>
+<style>
+    body {
+        margin: 0;
+        font-family: 'Poppins', sans-serif;
+        background: linear-gradient(135deg, #DDEBFF, #A3C8FF);
+        color: #333;
+        overflow-x: hidden;
+        animation: fadeIn 1s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+        from {opacity: 0;}
+        to {opacity: 1;}
+    }
+
+    header {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(10px);
+        padding: 20px 0;
+        text-align: center;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
+
+    header h1 {
+        margin: 0;
+        font-size: 28px;
+        color: #2264A7;
+        letter-spacing: 1px;
+    }
+
+    .container {
+        width: 90%;
+        max-width: 900px;
+        margin: 40px auto;
+        background: rgba(255,255,255,0.8);
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        animation: slideUp 0.8s ease-in-out;
+    }
+
+    @keyframes slideUp {
+        from {transform: translateY(40px); opacity: 0;}
+        to {transform: translateY(0); opacity: 1;}
+    }
+
+    h2 {
+        text-align: center;
+        color: #2264A7;
+        margin-bottom: 20px;
+    }
+
+    form {
+        display: grid;
+        gap: 15px;
+    }
+
+    input, select {
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        outline: none;
+        transition: 0.3s;
+    }
+
+    input:focus, select:focus {
+        border-color: #2264A7;
+        box-shadow: 0 0 5px #A3C8FF;
+    }
+
+    button {
+        background: #2264A7;
+        color: white;
+        padding: 12px;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: 0.3s;
+    }
+
+    button:hover {
+        background: #174D85;
+        transform: scale(1.05);
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 30px;
+    }
+
+    th, td {
+        border: 1px solid #ccc;
+        padding: 10px;
+        text-align: center;
+    }
+
+    th {
+        background: #A3C8FF;
+        color: #174D85;
+    }
+
+    .back-btn {
+        display: inline-block;
+        margin: 20px auto;
+        background: #174D85;
+        color: white;
+        text-decoration: none;
+        padding: 10px 20px;
+        border-radius: 10px;
+        transition: 0.3s;
+        text-align: center;
+    }
+
+    .back-btn:hover {
+        background: #0F3A67;
+        transform: scale(1.05);
+    }
+
+    footer {
+        text-align: center;
+        padding: 15px;
+        font-size: 14px;
+        color: #555;
+        margin-top: 40px;
+    }
+</style>
+</head>
+<body>
+
+<header>
+    <h1>Appliance Management System</h1>
+</header>
+
+<div class="container">
+    <h2>Customer Appliance Record</h2>
+
+    <form id="applianceForm">
+        <input type="text" id="name" placeholder="Name" required>
+        <input type="email" id="email" placeholder="Email" required>
+        <input type="text" id="phone" placeholder="Phone" required>
+        <select id="payment" required>
+            <option value="">Mode of Payment</option>
+            <option>Cash</option>
+            <option>Online Payment</option>
+            <option>Debit</option>
+            <option>Credit</option>
+            <option>Bank Transfer</option>
+        </select>
+        <input type="text" id="appliance" placeholder="Appliance" required>
+        <input type="text" id="model" placeholder="Model Number" required>
+        <input type="date" id="date" required>
+        <button type="submit">Add Record</button>
+    </form>
+
+    <table id="dataTable">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Payment</th>
+                <th>Appliance</th>
+                <th>Model</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <a href="index.html" class="back-btn">← Back to Portfolio</a>
+</div>
+
+<footer>
+    © 2025 Appliance Management System | Designed by Kate Ashley Revilles
+</footer>
+
+<script>
+    const form = document.getElementById("applianceForm");
+    const tableBody = document.querySelector("#dataTable tbody");
+
+    form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const name = document.getElementById("name").value;
+        const email = document.getElementById("email").value;
+        const phone = document.getElementById("phone").value;
+        const payment = document.getElementById("payment").value;
+        const appliance = document.getElementById("appliance").value;
+        const model = document.getElementById("model").value;
+        const date = document.getElementById("date").value;
+
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${name}</td>
+            <td>${email}</td>
+            <td>${phone}</td>
+            <td>${payment}</td>
+            <td>${appliance}</td>
+            <td>${model}</td>
+            <td>${date}</td>
+        `;
+        tableBody.appendChild(row);
+        form.reset();
+    });
+</script>
+
+</body>
+</html>
