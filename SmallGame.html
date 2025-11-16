@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tic-Tac-Toe Game</title>
+<style>
+  /* -------- Base Styles -------- */
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background: #ffe8e0; /* light coral background */
+    color: #cc4d33; /* coral text */
+    overflow-x: hidden;
+    position: relative;
+  }
+  h1,h2,h3 { color: #cc4d33; }
+  section { padding: 80px 20px; position: relative; z-index:2; }
+
+  /* -------- Navbar -------- */
+  nav {
+    display:flex; justify-content:space-between; align-items:center;
+    padding:20px 40px; background:rgba(255,255,255,0.85); backdrop-filter:blur(6px);
+    position:sticky; top:0; z-index:1000; box-shadow:0 2px 8px rgba(0,0,0,0.05);
+  }
+  nav .logo { font-size:1.5rem; font-weight:bold; color:#cc4d33; }
+  .back-btn {
+    background:#ffd1c1; color:#cc4d33; border:none; padding:10px 20px;
+    border-radius:20px; font-weight:bold; font-size:0.95rem; cursor:pointer;
+    transition: all 0.3s ease; box-shadow:0 3px 10px rgba(0,0,0,0.1);
+  }
+  .back-btn:hover { background:#ffb399; transform:scale(1.05); }
+
+  /* -------- Floating Blobs -------- */
+  .blob {
+    position: fixed; border-radius:50%;
+    background: radial-gradient(circle at 30% 30%, rgba(204,77,51,0.25), rgba(255,153,102,0.1));
+    filter: blur(60px); z-index:1;
+    animation: float 18s ease-in-out infinite, pulse 10s ease-in-out infinite;
+    will-change: transform;
+  }
+  .blob1 { width:400px; height:400px; top:-100px; left:-100px; }
+  .blob2 { width:300px; height:300px; bottom:-100px; right:-80px; }
+  @keyframes float {0%,100%{transform:translateY(0) translateX(0);}50%{transform:translateY(-40px) translateX(30px);}}
+  @keyframes pulse {0%,100%{transform:scale(1);}50%{transform:scale(1.1);}}
+
+  /* -------- Game Container -------- */
+  .game-container {
+    max-width:400px; margin:50px auto; background:#fff; padding:30px;
+    border-radius:15px; box-shadow:0 6px 20px rgba(0,0,0,0.08); text-align:center;
+    animation: fadeIn 1.2s ease forwards;
+  }
+
+  .board {
+    display:grid;
+    grid-template-columns:repeat(3, 100px);
+    grid-template-rows:repeat(3, 100px);
+    gap:10px;
+    justify-content:center;
+    margin-top:20px;
+  }
+  .cell {
+    background:#ffd1c1;
+    display:flex; align-items:center; justify-content:center;
+    font-size:2.5rem; font-weight:bold; cursor:pointer;
+    border-radius:15px; transition: background 0.3s;
+  }
+  .cell:hover { background:#ffb399; }
+
+  .message { margin-top:20px; font-size:1.1rem; min-height:30px; }
+
+  button.reset-btn {
+    margin-top:20px; padding:10px 20px; border:none;
+    border-radius:20px; background:#cc4d33; color:#fff;
+    font-weight:bold; cursor:pointer; transition: all 0.3s ease;
+  }
+  button.reset-btn:hover { background:#a63d27; transform:scale(1.05); }
+
+  footer { text-align:center; padding:20px; color:#666; font-size:0.9rem; margin-top:50px; }
+
+  @keyframes fadeIn { from{opacity:0; transform:translateY(20px);} to{opacity:1; transform:translateY(0);} }
+</style>
+</head>
+<body>
+
+<div class="blob blob1"></div>
+<div class="blob blob2"></div>
+
+<nav>
+  <div class="logo">Tic-Tac-Toe</div>
+  <button class="back-btn" onclick="window.location.href='index.html'">← Back to Portfolio</button>
+</nav>
+
+<section>
+  <div class="game-container">
+    <h2>Tic-Tac-Toe</h2>
+    <p>Player X goes first</p>
+    <div class="board" id="board">
+      <div class="cell" data-index="0"></div>
+      <div class="cell" data-index="1"></div>
+      <div class="cell" data-index="2"></div>
+      <div class="cell" data-index="3"></div>
+      <div class="cell" data-index="4"></div>
+      <div class="cell" data-index="5"></div>
+      <div class="cell" data-index="6"></div>
+      <div class="cell" data-index="7"></div>
+      <div class="cell" data-index="8"></div>
+    </div>
+    <div class="message" id="message"></div>
+    <button class="reset-btn" onclick="resetGame()">Restart Game</button>
+  </div>
+</section>
+
+<footer>© 2025 Tic-Tac-Toe Game</footer>
+
+<script>
+  const board = document.getElementById('board');
+  const cells = document.querySelectorAll('.cell');
+  const message = document.getElementById('message');
+  let currentPlayer = 'X';
+  let gameActive = true;
+  let boardState = Array(9).fill('');
+
+  const winningCombinations = [
+    [0,1,2], [3,4,5], [6,7,8],
+    [0,3,6], [1,4,7], [2,5,8],
+    [0,4,8], [2,4,6]
+  ];
+
+  cells.forEach(cell => cell.addEventListener('click', handleCellClick));
+
+  function handleCellClick(e) {
+    const index = e.target.getAttribute('data-index');
+    if(boardState[index] !== '' || !gameActive) return;
+
+    boardState[index] = currentPlayer;
+    e.target.textContent = currentPlayer;
+
+    if(checkWin()) {
+      message.textContent = `🎉 Player ${currentPlayer} wins!`;
+      gameActive = false;
+    } else if(boardState.every(cell => cell !== '')) {
+      message.textContent = "🤝 It's a tie!";
+      gameActive = false;
+    } else {
+      currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+      message.textContent = `Player ${currentPlayer}'s turn`;
+    }
+  }
+
+  function checkWin() {
+    return winningCombinations.some(comb => {
+      return comb.every(i => boardState[i] === currentPlayer);
+    });
+  }
+
+  function resetGame() {
+    boardState.fill('');
+    cells.forEach(cell => cell.textContent = '');
+    currentPlayer = 'X';
+    gameActive = true;
+    message.textContent = "Player X's turn";
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Portfolio</title>
+  <style>
+    /* -------- Base Styles -------- */
+    * {margin: 0; padding: 0; box-sizing: border-box;}
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: #fff;
+      color: #333;
+      overflow-x: hidden;
+      position: relative;
+    }
+    h1, h2, h3 { color: #b30000; }
+    a { color: #b30000; text-decoration: none; transition: color 0.3s ease; }
+    a:hover { color: #800000; }
+    section { padding: 80px 20px; position: relative; z-index: 2; }
+
+    /* -------- Navigation -------- */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(6px);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      transition: box-shadow 0.3s ease;
+    }
+    nav.scrolled { box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); }
+    nav .logo { font-size: 1.5rem; font-weight: bold; color: #b30000; }
+    nav ul { list-style: none; display: flex; gap: 20px; }
+    nav ul li a { font-weight: 500; position: relative; }
+    nav ul li a.active::after {
+      content: "";
+      position: absolute;
+      left: 0; bottom: -5px;
+      width: 100%; height: 2px;
+      background: #b30000;
+    }
+
+    /* -------- Scroll Progress Bar -------- */
+    #progress-bar {
+      position: fixed;
+      top: 0; left: 0;
+      height: 3px;
+      background: #b30000;
+      width: 0%;
+      z-index: 1200;
+      transition: width 0.1s;
+    }
+
+    /* -------- Hero Section -------- */
+    .hero { text-align: center; padding: 120px 20px; }
+    .hero h1 { font-size: 2.5rem; margin-bottom: 20px; }
+    .hero h1 span { border-right: 2px solid #b30000; animation: blink 0.8s infinite; }
+    @keyframes blink { 50% { border-color: transparent; } }
+    .hero p { font-size: 1.2rem; color: #555; }
+
+    /* -------- About -------- */
+    .about { max-width: 900px; margin: auto; text-align: center; }
+    .about p { margin-top: 15px; font-size: 1.1rem; color: #444; line-height: 1.6; }
+
+    /* -------- Projects -------- */
+    .projects { max-width: 1100px; margin: auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+    .project {
+      background: #fff;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      will-change: transform;
+      cursor: pointer; /* Add pointer cursor for button-like behavior */
+    }
+    .project:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+    }
+    .project-link { /* Style for the anchor tag wrapping the project */
+      text-decoration: none;
+      color: inherit;
+      display: block; /* Ensure the anchor takes full project card space */
+    }
+
+    /* -------- Contact (Cute Buttons) -------- */
+    .contact {
+      text-align: center;
+      padding-bottom: 100px;
+    }
+    .contact p {
+      margin: 10px 0 30px;
+      font-size: 1.1rem;
+      color: #555;
+    }
+    .contact a {
+      display: inline-block;
+      margin: 10px 12px;
+      padding: 12px 24px;
+      border-radius: 25px;
+      font-weight: bold;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      animation: bounce 3s infinite;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    /* Pastel button colors */
+    .contact-btn.email {
+      background: #ffe6f0;
+      color: #b3005e;
+    }
+    .contact-btn.email:hover {
+      background: #ffccdf;
+      transform: scale(1.05);
+    }
+
+    .contact-btn.linkedin {
+      background: #e6f0ff;
+      color: #0047b3;
+    }
+    .contact-btn.linkedin:hover {
+      background: #ccdfff;
+      transform: scale(1.05);
+    }
+
+    .contact-btn.github {
+      background: #e6ffe6;
+      color: #006600;
+    }
+    .contact-btn.github:hover {
+      background: #ccffcc;
+      transform: scale(1.05);
+    }
+
+    /* -------- Floating Blobs -------- */
+    .blob {
+      position: fixed;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, rgba(255, 0, 0, 0.25), rgba(179, 0, 0, 0.1));
+      filter: blur(60px);
+      z-index: 1;
+      animation: float 18s ease-in-out infinite, pulse 10s ease-in-out infinite;
+      will-change: transform;
+    }
+    .blob1 { width: 400px; height: 400px; top: -100px; left: -100px; }
+    .blob2 { width: 300px; height: 300px; bottom: -100px; right: -80px; }
+    .blob3 { width: 250px; height: 250px; top: 50%; left: 70%; transform: translate(-50%, -50%); }
+    @keyframes float { 0%,100% { transform: translateY(0) translateX(0); } 50% { transform: translateY(-40px) translateX(30px); } }
+    @keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+
+    /* -------- Scroll Animations -------- */
+    .fade-in { opacity: 0; transform: translateY(20px); transition: all 1s ease; }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    /* -------- Back-to-Top Button -------- */
+    #back-to-top {
+      position: fixed;
+      bottom: 30px; right: 30px;
+      background: #b30000; color: #fff;
+      border: none; border-radius: 50%;
+      width: 45px; height: 45px;
+      font-size: 20px; cursor: pointer;
+      display: none; align-items: center; justify-content: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      transition: opacity 0.3s, transform 0.3s;
+      z-index: 1100;
+    }
+    #back-to-top:hover { transform: scale(1.1); }
+
+    /* -------- Footer -------- */
+    footer { text-align: center; padding: 20px; font-size: 0.9rem; color: #666; }
+
+    /* -------- Responsive -------- */
+    @media (max-width: 768px) {
+      nav ul { display: none; }
+      nav .menu-toggle { display: block; cursor: pointer; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Scroll Progress Bar -->
+  <div id="progress-bar"></div>
+
+  <!-- Floating Blobs -->
+  <div class="blob blob1"></div>
+  <div class="blob blob2"></div>
+  <div class="blob blob3"></div>
+
+  <!-- Navbar -->
+  <nav>
+    <div class="logo">Portfolio</div>
+    <ul>
+      <li><a href="#about">About</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero fade-in">
+    <h1><span id="typewriter"></span></h1>
+    <p>Web Developer | Database Manager</p>
+  </section>
+
+  <!-- About -->
+  <section id="about" class="about fade-in">
+    <h2>About Me</h2>
+    <p>I create clean, responsive, and dynamic web applications. With expertise in web development and database management, I bring together design, functionality, and scalability.</p>
+  </section>
+
+  <!-- Projects -->
+  <section id="projects" class="fade-in">
+    <h2 style="text-align:center; margin-bottom:40px;">Projects</h2>
+    <div class="projects">
+      <a href="appliance.html" class="project-link">
+        <div class="project"><h3>Appliance Management System</h3><p>A PHP + MySQL system to manage appliance purchases, with search, filtering, and visualization.</p></div>
+      </a>
+      <a href="expense.html" class="project-link">
+        <div class="project"><h3>Expense Tracker System</h3><p>Track expenses by category/month with PHP, JS, and Chart.js, plus spending visualizations.</p></div>
+      </a>
+      <a href="classmate-directory.html" class="project-link">
+        <div class="project"><h3>Classmate Directory Website</h3><p>Searchable, alphabetically navigable directory with a professional UI in HTML, CSS, and JS.</p></div>
+      </a>
+      <a href="valencia-map.html" class="project-link">
+        <div class="project"><h3>Valencia Interactive Map</h3><p>Styled interactive map of Valencia with hover effects and navigation features.</p></div>
+      </a>
+	  <a href="SmallGame.html" class="project-link">
+		<div class="project">
+		<h3>Tic-Tac-Toe Game</h3>
+		<p>Classic two-player game with interactive board and win detection, fully styled with portfolio-themed UI.</p>
+		</div>
+		</a>
+		<a href="memorygame.html" class="project-link">
+		<div class="project">
+		<h3>Memory Game</h3>
+		<p>Fun card-matching game with a clean UI, flip animations, and a scoring challenge to test memory skills.</p>
+		</div>
+		</a>
+		<a href="registrationsystem.html" class="project-link">
+		<div class="project">
+		<h3>Login & Registration System</h3>
+		<p>Secure and interactive system with a clean UI, input validation, and smooth user experience for account management.</p>
+		</div>
+		</a>
+		<a href="to-do.html" class="project-link">
+		<div class="project">
+		<h3>To-Do List App</h3>
+		<p>Grey-themed task manager with add, complete, and delete features, smooth animations, and a user-friendly interface.</p>
+		</div>
+		</a>
+		
+
+<a href="calculator.html" class="project-link">
+  <div class="project">
+    <h3>Calculator</h3>
+    <p>Functional calculator supporting basic arithmetic with a sleek, responsive design and teal-themed UI.</p>
+  </div>
+</a>
+
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact" class="contact fade-in">
+    <h2>Contact Me</h2>
+    <p>Let’s connect and share ideas! </p>
+    <a href="mailto:kateashtone@gmail.com" class="contact-btn email">📧 Email</a>
+    <a href="#" class="contact-btn linkedin">💼 LinkedIn</a>
+    <a href="https://github.com/kitashlily" class="contact-btn github">🐙 GitHub</a>
+  </section>
+
+  <!-- Back to Top -->
+  <button id="back-to-top">↑</button>
+
+  <!-- Footer -->
+  <footer>
+    Kate Ashley Revilles © 2025
+  </footer>
+
+  <!-- JavaScript -->
+  <script>
+    // Typewriter Effect
+    const text = "Hello, I'm Kate Ashley Revilles";
+    let i = 0;
+    function typeWriter() {
+      if (i < text.length) {
+        document.getElementById("typewriter").textContent += text.charAt(i);
+        i++;
+        setTimeout(typeWriter, 120);
+      }
+    }
+    window.onload = typeWriter;
+
+    // Scroll animations
+    const faders = document.querySelectorAll(".fade-in");
+    const appearOptions = { threshold: 0.2 };
+    const appearOnScroll = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add("visible");
+        observer.unobserve(entry.target);
+      });
+    }, appearOptions);
+    faders.forEach(fader => appearOnScroll.observe(fader));
+
+    // Navbar shadow & active link
+    const nav = document.querySelector("nav");
+    const links = document.querySelectorAll("nav ul li a");
+    window.addEventListener("scroll", () => {
+      nav.classList.toggle("scrolled", window.scrollY > 50);
+      let fromTop = window.scrollY + 100;
+      links.forEach(link => {
+        let section = document.querySelector(link.getAttribute("href"));
+        if (section && section.offsetTop <= fromTop && section.offsetTop + section.offsetHeight > fromTop) {
+          link.classList.add("active");
+        } else {
+          link.classList.remove("active");
+        }
+      });
+    });
+
+    // Scroll progress bar
+    window.addEventListener("scroll", () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.body.scrollHeight - window.innerHeight;
+      const scrollPercent = (scrollTop / docHeight) * 100;
+      document.getElementById("progress-bar").style.width = scrollPercent + "%";
+    });
+
+    // Back-to-top button
+    const backToTop = document.getElementById("back-to-top");
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 300) { backToTop.style.display = "flex"; } 
+      else { backToTop.style.display = "none"; }
+    });
+    backToTop.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+  </script>
+</body>
+</html>
