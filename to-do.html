@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>To-Do List App</title>
+<style>
+  /* -------- Base Styles -------- */
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background: #f0f0f0; /* light grey background */
+    color: #4d4d4d; /* grey text */
+    overflow-x: hidden;
+    position: relative;
+  }
+  h1,h2,h3 { color: #4d4d4d; }
+  section { padding: 80px 20px; position: relative; z-index:2; }
+
+  /* -------- Navbar -------- */
+  nav {
+    display:flex; justify-content:space-between; align-items:center;
+    padding:20px 40px; background:rgba(255,255,255,0.85); backdrop-filter:blur(6px);
+    position:sticky; top:0; z-index:1000; box-shadow:0 2px 8px rgba(0,0,0,0.05);
+  }
+  nav .logo { font-size:1.5rem; font-weight:bold; color:#4d4d4d; }
+  .back-btn {
+    background:#d9d9d9; color:#4d4d4d; border:none; padding:10px 20px;
+    border-radius:20px; font-weight:bold; font-size:0.95rem; cursor:pointer;
+    transition: all 0.3s ease; box-shadow:0 3px 10px rgba(0,0,0,0.1);
+  }
+  .back-btn:hover { background:#bfbfbf; transform:scale(1.05); }
+
+  /* -------- Floating Blobs -------- */
+  .blob {
+    position: fixed; border-radius:50%;
+    background: radial-gradient(circle at 30% 30%, rgba(77,77,77,0.2), rgba(128,128,128,0.05));
+    filter: blur(60px); z-index:1;
+    animation: float 18s ease-in-out infinite, pulse 10s ease-in-out infinite;
+    will-change: transform;
+  }
+  .blob1 { width:400px; height:400px; top:-100px; left:-100px; }
+  .blob2 { width:300px; height:300px; bottom:-100px; right:-80px; }
+  @keyframes float {0%,100%{transform:translateY(0) translateX(0);}50%{transform:translateY(-40px) translateX(30px);} }
+  @keyframes pulse {0%,100%{transform:scale(1);}50%{transform:scale(1.05);} }
+
+  /* -------- To-Do Container -------- */
+  .todo-container {
+    max-width:500px; margin:50px auto; background:#fff; padding:30px;
+    border-radius:15px; box-shadow:0 6px 20px rgba(0,0,0,0.08); animation: fadeIn 1.2s ease forwards;
+  }
+  .todo-container h2 { text-align:center; margin-bottom:20px; }
+  .todo-container input {
+    width: calc(100% - 110px); padding:10px; border-radius:8px;
+    border:1px solid #ccc; outline:none; font-size:1rem;
+  }
+  .todo-container button.add-btn {
+    width:90px; padding:10px; margin-left:10px; border:none;
+    border-radius:10px; background:#4d4d4d; color:#fff; cursor:pointer;
+    transition: all 0.3s ease; font-weight:bold;
+  }
+  .todo-container button.add-btn:hover { background:#333; }
+
+  ul.todo-list { list-style:none; margin-top:20px; }
+  ul.todo-list li {
+    background:#f2f2f2; padding:12px 15px; border-radius:10px;
+    margin-bottom:10px; display:flex; justify-content:space-between; align-items:center;
+  }
+  ul.todo-list li.completed { text-decoration: line-through; color:#999; }
+  .todo-list button.delete-btn {
+    background:#ff4d4d; border:none; color:#fff; padding:5px 10px;
+    border-radius:8px; cursor:pointer; transition: all 0.3s ease;
+  }
+  .todo-list button.delete-btn:hover { background:#cc0000; }
+
+  footer { text-align:center; padding:20px; color:#666; font-size:0.9rem; margin-top:50px; }
+
+  @keyframes fadeIn { from{opacity:0; transform:translateY(20px);} to{opacity:1; transform:translateY(0);} }
+</style>
+</head>
+<body>
+
+<div class="blob blob1"></div>
+<div class="blob blob2"></div>
+
+<nav>
+  <div class="logo">To-Do List</div>
+  <button class="back-btn" onclick="window.location.href='PortfolioWebsite.html'">← Back to Portfolio</button>
+</nav>
+
+<section>
+  <div class="todo-container">
+    <h2>Grey-Themed To-Do List</h2>
+    <div class="input-group">
+      <input type="text" id="todoInput" placeholder="Add a new task...">
+      <button class="add-btn" onclick="addTodo()">Add</button>
+    </div>
+    <ul class="todo-list" id="todoList"></ul>
+  </div>
+</section>
+
+<footer>© 2025 To-Do List App</footer>
+
+<script>
+  const input = document.getElementById('todoInput');
+  const list = document.getElementById('todoList');
+
+  function addTodo() {
+    if(input.value.trim() === '') return;
+    const li = document.createElement('li');
+    li.textContent = input.value;
+
+    li.addEventListener('click', () => li.classList.toggle('completed'));
+
+    const deleteBtn = document.createElement('button');
+    deleteBtn.textContent = 'Delete';
+    deleteBtn.className = 'delete-btn';
+    deleteBtn.onclick = () => list.removeChild(li);
+
+    li.appendChild(deleteBtn);
+    list.appendChild(li);
+    input.value = '';
+  }
+
+  input.addEventListener('keypress', (e) => {
+    if(e.key === 'Enter') addTodo();
+  });
+</script>
+
+</body>
+</html>
