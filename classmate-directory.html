@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Classmate Directory</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: #fff9fb;
+      color: #333;
+      overflow-x: hidden;
+    }
+
+    h1 { color: #cc3366; }
+    section { padding: 60px 20px; position: relative; z-index: 2; }
+
+    /* Pink floating blobs */
+    .blob {
+      position: fixed;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, rgba(255, 182, 193, 0.25), rgba(255, 192, 203, 0.1));
+      filter: blur(60px);
+      z-index: 1;
+      animation: float 18s ease-in-out infinite, pulse 10s ease-in-out infinite;
+    }
+    .blob1 { width: 400px; height: 400px; top: -100px; left: -100px; }
+    .blob2 { width: 300px; height: 300px; bottom: -100px; right: -80px; }
+    @keyframes float {
+      0%,100% { transform: translateY(0) translateX(0); }
+      50% { transform: translateY(-40px) translateX(30px); }
+    }
+    @keyframes pulse {
+      0%,100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    /* Navbar */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(6px);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #cc3366;
+    }
+
+    .back-btn {
+      background: #ffe6ee;
+      color: #cc3366;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    }
+    .back-btn:hover {
+      background: #ffccd9;
+      transform: scale(1.05);
+    }
+
+    /* Directory cards */
+    .directory {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      max-width: 900px;
+      margin: 60px auto;
+      padding: 20px;
+      position: relative;
+      z-index: 2;
+    }
+    .card {
+      background: #fff;
+      border-radius: 15px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+      padding: 25px;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+    }
+    .card h3 {
+      color: #cc3366;
+      font-size: 1.2rem;
+      margin-bottom: 8px;
+    }
+    .card p {
+      color: #555;
+      font-size: 0.95rem;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #666;
+      font-size: 0.9rem;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+  <div class="blob blob1"></div>
+  <div class="blob blob2"></div>
+
+  <nav>
+    <div class="logo">Classmate Directory</div>
+    <button class="back-btn" onclick="window.location.href='PortfolioWebsite.html'">← Back to Portfolio</button>
+  </nav>
+
+  <section>
+    <div class="directory">
+      <div class="card">
+        <h3>Kate Ashley Revilles</h3>
+        <p>Computer Science Student</p>
+      </div>
+      <div class="card">
+        <h3>Jose Maria Dandi B. Patiño</h3>
+        <p>Project Leader</p>
+      </div>
+      <div class="card">
+        <h3>Gio Christopher Bacolod</h3>
+        <p>Backend Developer</p>
+      </div>
+      <div class="card">
+        <h3>Manuel G. Gamba</h3>
+        <p>UI/UX Designer</p>
+      </div>
+      <div class="card">
+        <h3>Mark Jaebe D. Anino</h3>
+        <p>Data Analyst</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>© 2025 Classmate Directory</footer>
+</body>
+</html>

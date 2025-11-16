@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login & Registration System</title>
+<style>
+  /* -------- Base Styles -------- */
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background: #e0f7e9; /* light green background */
+    color: #1a7a3c; /* green text */
+    overflow-x: hidden;
+    position: relative;
+  }
+  h1,h2,h3 { color: #1a7a3c; }
+  section { padding: 80px 20px; position: relative; z-index:2; }
+
+  /* -------- Navbar -------- */
+  nav {
+    display:flex; justify-content:space-between; align-items:center;
+    padding:20px 40px; background:rgba(255,255,255,0.85); backdrop-filter:blur(6px);
+    position:sticky; top:0; z-index:1000; box-shadow:0 2px 8px rgba(0,0,0,0.05);
+  }
+  nav .logo { font-size:1.5rem; font-weight:bold; color:#1a7a3c; }
+  .back-btn {
+    background:#c2f0d6; color:#1a7a3c; border:none; padding:10px 20px;
+    border-radius:20px; font-weight:bold; font-size:0.95rem; cursor:pointer;
+    transition: all 0.3s ease; box-shadow:0 3px 10px rgba(0,0,0,0.1);
+  }
+  .back-btn:hover { background:#99e0b8; transform:scale(1.05); }
+
+  /* -------- Floating Blobs -------- */
+  .blob {
+    position: fixed; border-radius:50%;
+    background: radial-gradient(circle at 30% 30%, rgba(26,122,60,0.25), rgba(102,204,102,0.1));
+    filter: blur(60px); z-index:1;
+    animation: float 18s ease-in-out infinite, pulse 10s ease-in-out infinite;
+    will-change: transform;
+  }
+  .blob1 { width:400px; height:400px; top:-100px; left:-100px; }
+  .blob2 { width:300px; height:300px; bottom:-100px; right:-80px; }
+  @keyframes float {0%,100%{transform:translateY(0) translateX(0);}50%{transform:translateY(-40px) translateX(30px);} }
+  @keyframes pulse {0%,100%{transform:scale(1);}50%{transform:scale(1.1);} }
+
+  /* -------- Form Container -------- */
+  .form-container {
+    max-width: 400px; margin:50px auto; background:#fff; padding:30px;
+    border-radius:15px; box-shadow:0 6px 20px rgba(0,0,0,0.08); text-align:center;
+    animation: fadeIn 1.2s ease forwards;
+  }
+  .form-container h2 { margin-bottom:20px; }
+  input {
+    width:100%; padding:10px; margin-bottom:15px; border-radius:8px; border:1px solid #c2f0d6;
+    outline:none; transition: 0.3s;
+  }
+  input:focus { border-color:#1a7a3c; box-shadow:0 0 6px rgba(26,122,60,0.2); }
+  button {
+    width:100%; padding:12px; border:none; border-radius:25px;
+    background:#1a7a3c; color:#fff; font-weight:bold; cursor:pointer; transition: all 0.3s ease;
+  }
+  button:hover { background:#145a28; transform:scale(1.05); }
+
+  footer { text-align:center; padding:20px; color:#666; font-size:0.9rem; margin-top:50px; }
+
+  @keyframes fadeIn { from{opacity:0; transform:translateY(20px);} to{opacity:1; transform:translateY(0);} }
+</style>
+</head>
+<body>
+
+<div class="blob blob1"></div>
+<div class="blob blob2"></div>
+
+<nav>
+  <div class="logo">Login & Registration</div>
+  <button class="back-btn" onclick="window.location.href='PortfolioWebsite.html'">← Back to Portfolio</button>
+</nav>
+
+<section>
+  <div class="form-container">
+    <h2>Register</h2>
+    <form id="registerForm">
+      <input type="text" placeholder="Full Name" id="regName" required>
+      <input type="email" placeholder="Email" id="regEmail" required>
+      <input type="password" placeholder="Password" id="regPassword" required>
+      <button type="submit">Register</button>
+    </form>
+  </div>
+
+  <div class="form-container">
+    <h2>Login</h2>
+    <form id="loginForm">
+      <input type="email" placeholder="Email" id="loginEmail" required>
+      <input type="password" placeholder="Password" id="loginPassword" required>
+      <button type="submit">Login</button>
+    </form>
+    <p id="loginMessage" style="margin-top:10px;"></p>
+  </div>
+</section>
+
+<footer>© 2025 Login & Registration System</footer>
+
+<script>
+  const registerForm = document.getElementById('registerForm');
+  const loginForm = document.getElementById('loginForm');
+  const loginMessage = document.getElementById('loginMessage');
+
+  // Simple localStorage registration
+  registerForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const name = document.getElementById('regName').value;
+    const email = document.getElementById('regEmail').value;
+    const password = document.getElementById('regPassword').value;
+    localStorage.setItem(email, JSON.stringify({name,email,password}));
+    alert("Registration successful!");
+    registerForm.reset();
+  });
+
+  loginForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
+    const user = JSON.parse(localStorage.getItem(email));
+    if(user && user.password === password){
+      loginMessage.style.color = "green";
+      loginMessage.textContent = `Welcome back, ${user.name}!`;
+      loginForm.reset();
+    } else {
+      loginMessage.style.color = "red";
+      loginMessage.textContent = "Invalid email or password.";
+    }
+  });
+</script>
+
+</body>
+</html>
